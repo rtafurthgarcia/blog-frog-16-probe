@@ -1,1 +1,46 @@
-<p>add-blog-page works!</p>
+<div class="blog-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="blog-input">
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="!form.valid"
+        mat-raised-button
+        color="primary"
+      >
+        Publish blog
+      </button>
+      <button
+        type="reset"
+        mat-raised-button
+        color="secondary"
+        (click)="form.reset()"
+      >
+        Reset
+      </button>
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+        <mat-error>
+          <span *ngIf="form?.get('title')?.errors?.['required']"
+            >Title should not be empty</span
+          >
+          <span *ngIf="form?.controls?.['title']?.errors?.['pattern']"
+            >Not a valid Title</span
+          >
+          <span *ngIf="form?.get('title')?.errors?.['custom']"
+            >Custom Validator</span
+          >
+          <span *ngIf="form?.get('title')?.errors?.['customAsync']"
+            >Custom Async Validator</span
+          >
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Tell your story...</mat-label>
+        <textarea matInput rows="20" formControlName="content"></textarea>
+        <mat-error>Content should not be empty</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
