@@ -1,4 +1,9 @@
 :host {
+  .error-message {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
   .mat-icon {
     padding-right: 5px;
   }
@@ -15,10 +20,14 @@
     margin-top: 20px;
   }
 
+  button {
+    width: 200px;
+    margin-left: auto;
+  }
+
   .blog-input {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     margin-left: auto;
     margin-right: auto;
     width: 80%;

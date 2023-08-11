@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,6 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { BlogStateService } from './state/blog-state.service';
+
+type CreatedBlog = {
+  title: string;
+  content: string;
+};
 
 type BlogFormGroup = FormGroup<{
   title: FormControl<string | null>;
@@ -17,11 +23,12 @@ type BlogFormGroup = FormGroup<{
   selector: 'app-add-blog-page',
   templateUrl: './add-blog-page.component.html',
   styleUrls: ['./add-blog-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddBlogPageComponent implements OnInit {
+export class AddBlogPageComponent {
   form!: BlogFormGroup;
 
-  ngOnInit(): void {
+  constructor(public blogStateService: BlogStateService) {
     this.form = new FormGroup({
       title: new FormControl<string | null>(
         'an existing title',
@@ -36,12 +43,12 @@ export class AddBlogPageComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     console.log(this.form);
     this.validateAllFormFields(this.form);
 
     if (this.form.valid) {
-      // add Blog
+      this.blogStateService.addBlog(this.form.value as CreatedBlog);
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable, filter, tap } from 'rxjs';
-import { LoadingService } from './core/loading-service';
 import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
+import { LoadingStateService } from './core/loading-state.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
   loginResponse$: Observable<LoginResponse>;
 
   constructor(
-    private loadingService: LoadingService,
+    private loadingService: LoadingStateService,
     private oidcSecurityService: OidcSecurityService
   ) {
     this.isLoading$ = this.loadingService.state$;
