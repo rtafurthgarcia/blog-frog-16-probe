@@ -11,6 +11,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { GlobalErrorHandler } from './core/error/global-error-handler.service';
 import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from 'angular-auth-oidc-client';
+import { NgxScrollTopModule } from 'ngx-scrolltop';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { AuthInterceptor } from 'angular-auth-oidc-client';
     BrowserAnimationsModule,
     MatProgressBarModule,
     CoreModule,
+    NgxScrollTopModule,
   ],
   providers: [
     {
