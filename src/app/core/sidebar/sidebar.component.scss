@@ -1,0 +1,40 @@
+:host {
+  .sidenav-container {
+    height: 100%;
+  }
+
+  .sidenav {
+    width: 200px;
+  }
+
+  .sidenav .mat-toolbar {
+    background: inherit;
+  }
+
+  .mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  #profileImage {
+    width: 2.1875rem;
+    height: 2.1875rem;
+    border-radius: 20px;
+    background: #0c2354;
+    font-size: 0.9rem;
+    color: #fff;
+    text-align: center;
+    line-height: 2.1875rem;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  #add-blog {
+    margin-right: 100px;
+  }
+}

@@ -1,0 +1,110 @@
+<ng-container *ngIf="loginResponse$ | async; let loginResponse">
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="'dialog'"
+      [mode]="'over'"
+      [opened]="false"
+    >
+      <mat-toolbar>Menu</mat-toolbar>
+      <mat-nav-list>
+        <a
+          mat-list-item
+          *ngIf="showCreateButton$ | async"
+          [routerLink]="['/add-blog/']"
+          (click)="drawer.toggle()"
+          >Erstelle einen neuen Blog!</a
+        >
+        <ng-container [ngSwitch]="loginResponse.isAuthenticated">
+          <a
+            mat-list-item
+            tabindex="0"
+            *ngSwitchCase="false"
+            (click)="login$.emit($event)"
+            (keydown)="login$.emit($event)"
+            >Login</a
+          >
+          <a
+            mat-list-item
+            tabindex="1"
+            *ngSwitchCase="true"
+            (click)="logoff$.emit($event)"
+            (keydown)="logoff$.emit($event)"
+            >Log out</a
+          >
+        </ng-container>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async"
+        >
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <span [routerLink]="['/overview/']">Blog Frog</span>
+        <span class="spacer"></span>
+
+        <ng-container *ngIf="(isHandset$ | async) === false">
+          <button
+            *ngIf="showCreateButton$ | async"
+            id="add-blog"
+            [routerLink]="['/add-blog/']"
+            mat-flat-button
+          >
+            Erstelle einen neuen Blog!
+          </button>
+        </ng-container>
+
+        <ng-container
+          *ngIf="loginResponse.isAuthenticated; then loggedIn; else loggedOut"
+        ></ng-container>
+
+        <ng-template #loggedOut>
+          <button
+            mat-icon-button
+            matTooltip="Login"
+            class="example-icon favorite-icon"
+            aria-label="Login button"
+            (click)="login$.emit($event)"
+          >
+            <mat-icon>login</mat-icon>
+          </button>
+        </ng-template>
+
+        <ng-template #loggedIn>
+          <div
+            id="profileImage"
+            [innerHTML]="initials$ | async"
+            [matMenuTriggerFor]="beforeMenu"
+            matTooltip="You are logged in as {{
+              loginResponse.userData.preferred_username
+            }}"
+          ></div>
+          <mat-menu #beforeMenu="matMenu" xPosition="before">
+            <button mat-menu-item>
+              <mat-icon>account_circle</mat-icon>
+              <span>My Account</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>favorite</mat-icon>
+              <span>My favorite blogs</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logoff$.emit($event)">
+              <mat-icon>logout</mat-icon>
+              <span>Log out</span>
+            </button>
+          </mat-menu>
+        </ng-template>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>

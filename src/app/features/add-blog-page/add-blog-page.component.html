@@ -1,3 +1,11 @@
+<mat-toolbar
+  class="back-navigation"
+  color="primary"
+  [routerLink]="['/overview/']"
+>
+  <mat-icon>arrow_back</mat-icon>Zurück zur Übersicht
+</mat-toolbar>
+
 <div class="blog-container" *ngIf="blogStateService.state$ | async; let state">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="blog-input">
