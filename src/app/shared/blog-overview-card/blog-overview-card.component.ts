@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
 export type Blog = {
   author: string;
@@ -18,6 +24,12 @@ export type Blog = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogOverviewCardComponent {
-  @Input({ required: true }) blog!: Blog;
+  @Input({ required: true }) model!: Blog;
   @Input({ required: true }) index!: number;
+
+  @Input() routeCommands!: [string, number];
+  @Output('likeBlog') likeBlog$ = new EventEmitter<{
+    id: number;
+    likedByMe: boolean;
+  }>();
 }

@@ -8,4 +8,9 @@ import { Blog } from '../../shared/blog-overview-card/blog-overview-card.compone
 })
 export class BlogOverviewPageComponent {
   @Input() blogs!: Blog[];
+
+  likeBlog(event: { id: number; likedByMe: boolean }) {
+    console.log('likeBlog', event);
+    // TODO: implement likeBlog
+  }
 }

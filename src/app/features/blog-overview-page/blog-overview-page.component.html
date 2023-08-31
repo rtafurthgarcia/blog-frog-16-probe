@@ -2,9 +2,10 @@
   <div class="blog-container">
     <app-blog-overview-card
       *ngFor="let blog of blogs; let i = index"
-      [blog]="blog"
       [index]="i"
-      [routerLink]="['/detail/', blog.id]"
+      [model]="blog"
+      [routeCommands]="['/detail/', blog.id]"
+      (likeBlog)="likeBlog($event)"
     ></app-blog-overview-card>
   </div>
 </ng-container>

@@ -1,24 +1,49 @@
 <mat-card class="blog-card">
-  <mat-card-header>
-    <mat-card-title class="card-title">{{ blog.title }}</mat-card-title>
+  <mat-card-header [routerLink]="routeCommands">
+    <mat-card-title class="card-title" data-testid="title">{{
+      model.title
+    }}</mat-card-title>
   </mat-card-header>
   <img
     height="300"
     class="blog-image"
+    [routerLink]="routeCommands"
     mat-card-image
-    src="{{ 'https://picsum.photos/seed/' + blog.id + '/348/300' }}"
+    src="{{ 'https://picsum.photos/seed/' + model.id + '/348/300' }}"
     alt="Random Photo"
   />
   <mat-card-content>
-    <p>{{ blog.contentPreview }}</p>
+    <p>{{ model.contentPreview }}</p>
   </mat-card-content>
   <mat-card-footer class="blog-footer">
     <mat-card-content class="blog-author">
-      <p>{{ blog.author }}</p>
+      <p>{{ model.author }}</p>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
+      <button
+        data-testid="like-button"
+        mat-icon-button
+        aria-label="Example icon button with a heart icon"
+        (click)="likeBlog$.emit({ id: model.id, likedByMe: model.likedByMe })"
+      >
+        <mat-icon
+          data-testid="like-button-icon"
+          [ngStyle]="{ color: model.likedByMe ? 'red' : 'black' }"
+          >favorite</mat-icon
+        >
+      </button>
+      <button
+        data-testid="share-button"
+        [share]="{
+          title: model.title,
+          commands: routeCommands,
+          pictureUrl: 'https://picsum.photos/seed/' + model.id + '/232/200'
+        }"
+        mat-icon-button
+        aria-label="Example icon button with a shareicon"
+      >
+        <mat-icon>share</mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card-footer>
 </mat-card>
