@@ -134,3 +134,53 @@ The `providedIn` property is a way to specify where the injectable should be reg
 'root': When you provide the service at the 'root' level, Angular creates a single, shared instance of the service and injects it into any class that asks for it. This makes the service essentially a singleton in the application, and it stays alive for the entire lifespan of the app.
 
 By setting providedIn: 'root', you're telling Angular to provide this service in the application's root injector. That means the service is available throughout the entire application without needing to list it in any module's providers array.
+
+That means in a way, dependancy injection on the root lvl provides a very basic form of state management. 
+
+### Routing 
+
+- Routes with the `loadChildren` property `loadChildren () => import().then((m) => m.Page)` are lazy-loaded
+- Routes with the `component` property are eager-loaded
+
+```
+export const blogResolver: ResolveFn<Blog[]> = () =>
+  inject(BlogBackendService).getBlogPosts();
+
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'overview',
+    pathMatch: 'full',
+  },
+  {
+    path: 'overview',
+    loadChildren: () =>
+      import('./features/blog-overview-page/blog-overview-page.module').then(
+        (m) => m.BlogOverviewPageModule
+      ), 
+    resolve: { blogs: blogResolver },
+  },
+  {
+    path: 'add-blog',
+    loadChildren: () =>
+      import('./features/add-blog-page/add-blog-page.module').then(
+        (m) => m.AddBlogPageModule
+      ),
+    canActivate: [authenticationGuard],
+  },
+  {
+    path: 'error',
+    component: ErrorPageComponent,
+  },
+  { path: '**', component: PageNotFoundPageComponent },
+];
+```
+
+#### Guards
+Route guards in Angular are interfaces which can tell the Angular router to allow or disallow access to a route.
+
+- `CanActivate`: is used to determine whether a route can be activated or not. It's often employed to check whether a user is logged in. If the user is not logged in, you could redirect them to a login page.
+- `CanActivateChild`: This guard works like CanActivate but is applied to all child routes under a specific parent route. It's useful for protecting child routes under a general section of your application.
+- `CanDeactivate`: checks if you can navigate away from a route. This is useful in scenarios where users might have unsaved changes that you want to warn them about before they leave the page.
+- `CanLoad`:  determines if a lazy-loaded module can be loaded or not. It's often used for feature modules that should only be loaded for authorized or authenticated users.
+- `Resolve`: pre-fetches data before navigating to a route. This can be useful if you want to ensure that certain data is available before a route is activated.

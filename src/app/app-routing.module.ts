@@ -10,6 +10,7 @@ import { Blog, BlogBackendService } from './core/blog-backend.service';
 import { ErrorPageComponent } from './core/static/error-page.component';
 import { PageNotFoundPageComponent } from './core/static/page-not-found-page.component';
 import { authenticationGuard } from './core/auth/authentication.guard';
+import { AccessDeniedComponent } from './core/static/access-denied-page.component';
 
 export const blogResolver: ResolveFn<Blog[]> = () =>
   inject(BlogBackendService).getBlogPosts();
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'error',
     component: ErrorPageComponent,
+  },
+  {
+    path: 'denied',
+    component: AccessDeniedComponent
   },
   { path: '**', component: PageNotFoundPageComponent },
 ];

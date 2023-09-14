@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { map } from 'rxjs';
 import { hasRole } from './jwt';
@@ -7,6 +7,7 @@ import { hasRole } from './jwt';
 // a whole function is exported !
 export const authenticationGuard: CanActivateFn = () => {
   const oidcSecurityService = inject(OidcSecurityService);
+  const router = inject(Router);
 
   return oidcSecurityService.checkAuth().pipe(
     map((loginResponse: LoginResponse) => {
@@ -16,7 +17,8 @@ export const authenticationGuard: CanActivateFn = () => {
       ) {
         return true;
       } else {
-        oidcSecurityService.authorize();
+        router.navigate(["denied"]);
+        //oidcSecurityService.authorize();
         return false;
       }
     })

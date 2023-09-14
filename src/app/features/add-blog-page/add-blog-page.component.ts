@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -27,8 +27,9 @@ type BlogFormGroup = FormGroup<{
 })
 export class AddBlogPageComponent {
   form!: BlogFormGroup;
+  blogStateService: BlogStateService = inject(BlogStateService);
 
-  constructor(public blogStateService: BlogStateService) {
+  constructor() {
     this.form = new FormGroup({
       title: new FormControl<string | null>(
         'an existing title',
