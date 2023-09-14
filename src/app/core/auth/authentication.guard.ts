@@ -4,6 +4,7 @@ import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { map } from 'rxjs';
 import { hasRole } from './jwt';
 
+// a whole function is exported !
 export const authenticationGuard: CanActivateFn = () => {
   const oidcSecurityService = inject(OidcSecurityService);
 

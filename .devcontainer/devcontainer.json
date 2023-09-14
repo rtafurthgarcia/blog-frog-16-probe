@@ -1,0 +1,38 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+	"name": "Angular-Web-Dev",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:0-20",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/angular-cli:2": {}
+	},
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    "forwardPorts": [4020],
+
+    // Use 'portsAttributes' to set default properties for specific forwarded ports. More info: https://code.visualstudio.com/docs/remote/devcontainerjson-reference.
+    "portsAttributes": {
+        "4020": {
+            "label": "Angular web app",
+            "onAutoForward": "notify"
+        }
+    },
+
+
+	// The name of the following service has to match one of the services in docker-compose.yml
+	"service": "devcontainer",
+	"customizations": {
+        "vscode": {
+            "extensions":[
+                "firsttris.vscode-jest-runner",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-tslint-plugin",
+                "rtbenfield.vscode-jest-test-adapter",
+                "dbaeumer.vscode-eslint",
+                "johnpapa.angular-essentials",
+                "lucono.karma-test-explorer",
+                "angular.ng-template"
+            ]
+        }
+    },
+	"shutdownAction": "stopCompose",
+	"remoteUser": "node"
+}
