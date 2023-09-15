@@ -1,12 +1,13 @@
 import { NgModule, inject } from '@angular/core';
 import {
+  ActivatedRouteSnapshot,
   ResolveFn,
   RouterModule,
   Routes,
   provideRouter,
   withComponentInputBinding,
 } from '@angular/router';
-import { Blog, BlogBackendService } from './core/blog-backend.service';
+import { Blog, BlogBackendService, DetailBlog } from './core/blog-backend.service';
 import { ErrorPageComponent } from './core/static/error-page.component';
 import { PageNotFoundPageComponent } from './core/static/page-not-found-page.component';
 import { authenticationGuard } from './core/auth/authentication.guard';
@@ -14,6 +15,11 @@ import { AccessDeniedComponent } from './core/static/access-denied-page.componen
 
 export const blogResolver: ResolveFn<Blog[]> = () =>
   inject(BlogBackendService).getBlogPosts();
+
+export const detailBlogResolver: ResolveFn<DetailBlog> =
+  (route: ActivatedRouteSnapshot) => {
+    return inject(BlogBackendService).getDetailBlog(Number(route.paramMap.get('id')));
+  };
 
 const routes: Routes = [
   {
@@ -30,11 +36,12 @@ const routes: Routes = [
     resolve: { blogs: blogResolver },
   },
   {
-    path: 'detail',
+    path: 'detail/:id',
     loadChildren: () =>
       import('./features/blog-detail-page/blog-detail-page.module').then(
         (m) => m.BlogDetailPageModule
       ),
+    resolve: {blog: detailBlogResolver}
   },
   {
     path: 'add-blog',

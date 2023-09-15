@@ -1,24 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BlogOverviewCardComponent } from './blog-overview-card.component';
+import { BlogDetailCardComponent } from './blog-detail-card.component';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ShareDirective } from '../share/share.directive';
-import { RouterModule } from '@angular/router';
-import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
-  declarations: [BlogOverviewCardComponent],
+  declarations: [ BlogDetailCardComponent ],
   imports: [
     CommonModule,
-    RouterModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
     ShareDirective,
-    MatBadgeModule,
+    MatBadgeModule
   ],
-  exports: [BlogOverviewCardComponent],
+  exports: [ BlogDetailCardComponent ]
 })
-export class BlogOverviewCardModule {}
+export class BlogDetailCardModule { }

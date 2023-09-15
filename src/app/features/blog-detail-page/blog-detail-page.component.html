@@ -1,1 +1,8 @@
-The id of the Blog: {{ id }}
+<div class="blog-container">
+    <app-blog-detail-card
+        [model]="blog"
+        [id]="blogId"
+        (likeBlog)="likeBlog($event)"
+        (deleteBlog)="deleteBlog()"
+    ></app-blog-detail-card>
+</div>

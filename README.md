@@ -107,7 +107,7 @@ from([4, 6, 19, 561, 6611]).pipe(
 ).subscribe(x => console.log(x));
 ```
 
-### Change detection
+# Change detection
 
 It's responsible for keeping the view (DOM) in sync with the application data (model).
 Whenever the model data changes, Angular's change detection system updates the view to reflect those changes.
@@ -119,7 +119,7 @@ Angular provides two main change detection strategies:
 
 Note that when Angular detects that a change has potentially occurred (either due to user actions, HTTP requests, or other asynchronous operations), it runs a change detection cycle to update the view.
 
-### Dependancy injection
+# Dependancy injection
 
 Components, services or whatever class can be injected directly by appending this decorator before any class
 
@@ -137,7 +137,7 @@ By setting providedIn: 'root', you're telling Angular to provide this service in
 
 That means in a way, dependancy injection on the root lvl provides a very basic form of state management. 
 
-### Routing 
+# Routing 
 
 - Routes with the `loadChildren` property `loadChildren () => import().then((m) => m.Page)` are lazy-loaded
 - Routes with the `component` property are eager-loaded
@@ -174,9 +174,11 @@ const routes: Routes = [
   },
   { path: '**', component: PageNotFoundPageComponent },
 ];
+
+The RouterModule.forChild(routes) method is used for configuring the routes of lazy-loaded or feature modules. It essentially tells Angular that the routes specified in forChild should be added as child routes of some existing (already loaded) routes in your application.
 ```
 
-#### Guards
+## Guards
 Route guards in Angular are interfaces which can tell the Angular router to allow or disallow access to a route.
 
 - `CanActivate`: is used to determine whether a route can be activated or not. It's often employed to check whether a user is logged in. If the user is not logged in, you could redirect them to a login page.
@@ -184,3 +186,44 @@ Route guards in Angular are interfaces which can tell the Angular router to allo
 - `CanDeactivate`: checks if you can navigate away from a route. This is useful in scenarios where users might have unsaved changes that you want to warn them about before they leave the page.
 - `CanLoad`:  determines if a lazy-loaded module can be loaded or not. It's often used for feature modules that should only be loaded for authorized or authenticated users.
 - `Resolve`: pre-fetches data before navigating to a route. This can be useful if you want to ensure that certain data is available before a route is activated.
+
+`Resolve` is special. it allows you to define a resolver function that then injects data inside our component. Ofc you can define multiple inputs (bc thats what they are) by setting new properties linked to their resolver functions. 
+
+# Services
+
+Service classes serve multiple purposes. They may be used to manage state throughout the application, or can be used to interrogate an API. 
+
+```
+// Zod schema -> used to make sure whatever json object your receive is valid 
+const LikedBlogSchema = z.object({
+  likedByMe: z.boolean()
+});
+
+// Type -> necessary to then parse a json object 
+export type LikedBlog = z.infer<typeof LikedBlogSchema>;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BlogBackendService {
+  constructor(private httpClient: HttpClient) {}
+
+  getBlogPosts(): Observable<Blog[]> {
+    return this.httpClient
+      .get<Blog[]>(`${environment.serviceUrl}/entries`) // returns an observable 
+      .pipe(map((blogs) => BlogArraySchema.parse(blogs))); // pipe -> to transform whatever gets returned
+  }
+
+  likeBlog(blogId: number, blog: LikedBlog): Promise<Object> {
+    LikedBlogSchema.parse(blog); // make sure its valid
+    return lastValueFrom(
+      this.httpClient.put(`${environment.serviceUrl}/entries/${blogId}/like-info`, blog)
+    );
+  }
+}
+```
+
+# Angular attributes
+
+- `<app-child [data]="parentData"></app-child>` -> `[data]` for `@Input() data`
+- `<app-child ()="parentData"></app-child>` -> `[data]` for `@Input() data`

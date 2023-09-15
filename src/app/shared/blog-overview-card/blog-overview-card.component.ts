@@ -25,9 +25,9 @@ export type Blog = {
 })
 export class BlogOverviewCardComponent {
   @Input({ required: true }) model!: Blog;
-  @Input({ required: true }) index!: number;
-
+  @Input() index!: number;
   @Input() routeCommands!: [string, number];
+
   @Output('likeBlog') likeBlog$ = new EventEmitter<{
     id: number;
     likedByMe: boolean;

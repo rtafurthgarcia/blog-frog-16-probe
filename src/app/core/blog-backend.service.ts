@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 
 import { z } from 'zod';
+
 import { Observable, lastValueFrom, map } from 'rxjs';
 
 const BlogSchema = z.object({
@@ -27,6 +28,33 @@ const CreatedBlogSchema = z.object({
 
 export type CreatedBlog = z.infer<typeof CreatedBlogSchema>;
 
+const LikedBlogSchema = z.object({
+  likedByMe: z.boolean()
+});
+
+export type LikedBlog = z.infer<typeof LikedBlogSchema>;
+
+const CommentSchema = z.object({
+  content: z.string(),
+  date: z.string().datetime(),
+  author: z.string()
+})
+
+const CommentsArraySchema = z.array(CommentSchema);
+
+export type Comment = z.infer<typeof CommentSchema>;
+
+const DetailBlogSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  comments: CommentsArraySchema,
+  author: z.string(),
+  likes: z.number(),
+  likedByMe: z.boolean()
+});
+
+export type DetailBlog = z.infer<typeof DetailBlogSchema>;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -39,10 +67,31 @@ export class BlogBackendService {
       .pipe(map((blogs) => BlogArraySchema.parse(blogs)));
   }
 
-  addBlog(blog: CreatedBlog) {
+  getDetailBlog(blogId: number): Observable<DetailBlog> {
+    return this.httpClient
+      .get<DetailBlog>(`${environment.serviceUrl}/entries/${blogId}`)
+      .pipe(
+        map((blog) => DetailBlogSchema.parse(blog)),
+      );
+  }
+
+  addBlog(blog: CreatedBlog): Promise<object> {
     CreatedBlogSchema.parse(blog);
     return lastValueFrom(
       this.httpClient.post(`${environment.serviceUrl}/entries`, blog)
+    );
+  }
+
+  deleteBlog(blogId: number): Promise<object> {
+    return lastValueFrom(
+      this.httpClient.delete(`${environment.serviceUrl}/entries/${blogId}`)
+    );
+  }
+
+  likeBlog(blogId: number, blog: LikedBlog): Promise<object> {
+    LikedBlogSchema.parse(blog);
+    return lastValueFrom(
+      this.httpClient.put(`${environment.serviceUrl}/entries/${blogId}/like-info`, blog)
     );
   }
 }

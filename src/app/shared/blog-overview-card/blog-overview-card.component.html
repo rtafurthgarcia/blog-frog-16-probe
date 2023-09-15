@@ -24,12 +24,26 @@
         data-testid="like-button"
         mat-icon-button
         aria-label="Example icon button with a heart icon"
-        (click)="likeBlog$.emit({ id: model.id, likedByMe: model.likedByMe })"
+        (click)="likeBlog$.emit({ id: model.id, likedByMe: !model.likedByMe })"
       >
         <mat-icon
           data-testid="like-button-icon"
           [ngStyle]="{ color: model.likedByMe ? 'red' : 'black' }"
           >favorite</mat-icon
+        >
+      </button>
+      <button
+        data-testid="comment-button"
+        mat-icon-button
+        aria-label="Example icon button with a heart icon"
+        [routerLink]="routeCommands"
+      >
+        <mat-icon 
+          [matBadge]="model.comments"
+          matBadgeColor="warn"
+          aria-hidden="false"
+          data-testid="comment-button-icon"
+          >comment</mat-icon
         >
       </button>
       <button

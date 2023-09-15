@@ -1,0 +1,57 @@
+<mat-card class="blog-card">
+    <mat-card-header>
+      <mat-card-title class="card-title" data-testid="title">{{
+        model.title
+      }}</mat-card-title>
+    </mat-card-header>
+    <img
+      height="300"
+      class="blog-image"
+      mat-card-image
+      src="{{ 'https://picsum.photos/seed/' + id + '/348/300' }}"
+      alt="Random Photo"
+    />
+    <mat-card-content>
+      <p>{{ model.content }}</p>
+    </mat-card-content>
+    <mat-card-footer class="blog-footer">
+      <mat-card-content class="blog-author">
+        <p>{{ model.author }}</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button
+          data-testid="like-button"
+          mat-icon-button
+          aria-label="Example icon button with a heart icon"
+          (click)="likeBlog$.emit({ likedByMe: !model.likedByMe })"
+        >
+          <mat-icon
+            data-testid="like-button-icon"
+            [ngStyle]="{ color: model.likedByMe ? 'red' : 'black' }"
+            >favorite</mat-icon
+          >
+        </button>
+        <button
+          data-testid="comment-button"
+          mat-icon-button
+          aria-label="Example icon button with a heart icon"
+        >
+          <mat-icon 
+            [matBadge]="model.comments.length"
+            matBadgeColor="warn"
+            aria-hidden="false"
+            data-testid="comment-button-icon"
+            >comment</mat-icon
+          >
+        </button>
+        <button
+          data-testid="share-button"
+          mat-icon-button
+          aria-label="Example icon button with a shareicon"
+        >
+          <mat-icon>share</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+  

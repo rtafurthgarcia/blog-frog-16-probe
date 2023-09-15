@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BlogDetailPageComponent } from './blog-detail-page.component';
 import { RouterModule, Routes } from '@angular/router';
+import { BlogDetailCardModule } from 'src/app/shared/blog-detail-card/blog-detail-card.module';
 
 const routes: Routes = [
   {
@@ -12,6 +13,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [BlogDetailPageComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule, 
+    BlogDetailCardModule,
+    RouterModule.forChild(routes)],
 })
 export class BlogDetailPageModule {}
